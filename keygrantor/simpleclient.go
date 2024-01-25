@@ -108,7 +108,7 @@ func (sc *SimpleClient) CreateAndStartHttpsServer(serverName, listenURL string, 
 		var err error
 		for _, url := range AttestationProviderURLs {
 			token, err = enclave.CreateAzureAttestationToken(reportData, url)
-			if err != nil {
+			if err == nil {
 				break
 			}
 		}
