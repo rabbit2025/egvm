@@ -32,7 +32,26 @@ func main() {
 	keySrc := flag.String("xprvsrc", "", "the server from which we can sync xprv key")
 	listenAddrP := flag.String("listen", "0.0.0.0:8084", "listen address")
 	keyFile := flag.String("keyfile", KeyFile, "key file")
+	testData := flag.String("testdata", "", "test data")
 	flag.Parse()
+
+	if testData != nil && len(*testData) > 0 {
+		cd := [32]byte{}
+		td, err := hex.DecodeString(*testData)
+		if err != nil {
+			panic(err)
+		}
+		copy(cd[:], td)
+
+		ExtPrivKey, err := keygrantor.GetKeyFromKeyGrantor(*keySrc, cd)
+		fmt.Println("got priv key from KG !!!")
+		fmt.Println(ExtPrivKey.String())
+		if err != nil {
+			panic(err)
+		}
+		return
+	}
+
 	var fileExists bool
 	ExtPrivKey, fileExists = keygrantor.RecoverKeyFromFile(*keyFile)
 	if !fileExists {
