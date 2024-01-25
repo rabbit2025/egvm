@@ -41,6 +41,7 @@ func main() {
 		} else {
 			var err error
 			ExtPrivKey, err = keygrantor.GetKeyFromKeyGrantor(*keySrc, Zero32)
+			fmt.Println("got priv key from KG !!!")
 			if err != nil {
 				panic(err)
 			}
