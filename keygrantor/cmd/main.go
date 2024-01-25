@@ -37,6 +37,7 @@ func main() {
 	ExtPrivKey, fileExists = keygrantor.RecoverKeyFromFile(*keyFile)
 	if !fileExists {
 		if keySrc == nil || len(*keySrc) == 0 {
+			fmt.Println("gen new priv key !!!")
 			ExtPrivKey = keygrantor.GetRandomExtPrivKey()
 		} else {
 			var err error
