@@ -45,7 +45,7 @@ func main() {
 				panic(err)
 			}
 		}
-		keygrantor.SealKeyToFile(KeyFile, ExtPrivKey)
+		keygrantor.SealKeyToFile(*keyFile, ExtPrivKey)
 	}
 	ExtPubKey = ExtPrivKey.PublicKey()
 	listenAddr := *listenAddrP
