@@ -177,7 +177,13 @@ func VerifyPeerReport(report, selfReport attestation.Report) error {
 		return ErrTCBStatus
 	}
 	if !bytes.Equal(selfReport.UniqueID, report.UniqueID) {
-		return ErrUniqueIDMismatch
+		fmt.Println(hex.EncodeToString(selfReport.UniqueID))
+		fmt.Println(hex.EncodeToString(report.UniqueID))
+		return fmt.Errorf("ErrUniqueIDMismatch: %s != %s",
+			hex.EncodeToString(selfReport.UniqueID),
+			hex.EncodeToString(report.UniqueID),
+		)
+		// return ErrUniqueIDMismatch
 	}
 	if !bytes.Equal(selfReport.SignerID, report.SignerID) {
 		return ErrSignerIDMismatch
@@ -283,7 +289,7 @@ func GetKeyFromKeyGrantor(keyGrantorUrl string, clientData [32]byte) (*bip32.Key
 func VerifyJWT(token string, report attestation.Report) (err error) {
 	for _, url := range AttestationProviderURLs {
 		tokenReport, err := attestation.VerifyAzureAttestationToken(token, url)
-		if err != nil {
+		if err == nil {
 			return VerifyPeerReport(tokenReport, report)
 		}
 	}

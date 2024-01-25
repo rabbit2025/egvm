@@ -55,11 +55,13 @@ func main() {
 func createAndStartHttpServer(listenAddr string) {
 	// Return the extended public key
 	http.HandleFunc("/xpub", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("handle xpub ...")
 		w.Write([]byte(ExtPubKey.B58Serialize()))
 	})
 
 	// Get remote attestion report to endorse the extended public key
 	http.HandleFunc("/report", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("handle report ...")
 		hash := sha256.Sum256([]byte(ExtPubKey.B58Serialize()))
 		report, err := enclave.GetRemoteReport(hash[:])
 		if err != nil {
@@ -72,6 +74,7 @@ func createAndStartHttpServer(listenAddr string) {
 
 	// Peer keygrantors get ExtPrivKey through '/xprv'
 	http.HandleFunc("/xprv", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("handle xprv ...")
 		pubKey, pubkeyBz := handleRequesterPubkey(w, r)
 		if pubKey == nil {
 			return
@@ -109,6 +112,7 @@ func createAndStartHttpServer(listenAddr string) {
 
 	// For requestors to get derived key
 	http.HandleFunc("/getkey", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("handle getkey ...")
 		pubKey, pubkeyBz := handleRequesterPubkey(w, r)
 		if pubKey == nil {
 			return
